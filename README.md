@@ -3,7 +3,7 @@ A wrapper for TI's JavaScript-based z80/eZ80 emulators present in their TI-Smart
 
 ---
 
-### This repository contains abolutely no code or resources from TI.  
+### This repository contains absolutely no code or resources from TI.  
 For this project to work, you have to use the appropriate emulator file from TI SmartView - This project is completely pointless if you don't have it installed already!  
 *I shall remind everyone that you are solely responsible for the usage of this project, and you're obviously still subject to the SmartView license.*
 
@@ -12,7 +12,7 @@ For this project to work, you have to use the appropriate emulator file from TI 
 ## Description:
 
 The point of this is to be able to enjoy a good emulation speed from TI's emu by running it from within a web browser rather than from within SmartView, since Java has a suboptimal JS interpreter in its webview...  
-This is especially useful while there is no community-made 84+CE/83PCE emulators, for developers wanting to easly record the screen, for instance, either with the integrated feature, or by recording their computer running the emu at a decent speed.
+This is especially useful while there is no community-made 84+CE/83PCE emulators, for developers wanting to easily record the screen, for instance, either with the integrated feature, or by recording their computer running the emu at a decent speed.
 
 List of supported emulators:
 * TI-82 Advanced / TI-83 Plus.fr / TI-84 Plus (SE)
