@@ -24,7 +24,7 @@ In theory, any "TI ExamCalc" (that's the official name) JavaScript emulator may 
 #### How to use it:
 * [Download](https://github.com/TI-Planet/ti_jsemu_wrapper/archive/master.zip) this project
 * Open the `index.html` file from the zip you've just downloaded, with a recent decent browser
-* Select or drag&drop the TI SmartView CE emulator file (_the .jar_) you want to use (_located in the SmartView app folder and within the `Java` or `app` directory_)
+* Select or drag&drop the TI SmartView CE emulator file (_the .jar_) you want to use (_located in the SmartView app folder and within the `Java` (or `app`) > `emulators` directory_)
 * That's all :) You don't need to do any extracting/moving/copying!
 
 #### What's in it right now:
@@ -35,9 +35,12 @@ In theory, any "TI ExamCalc" (that's the official name) JavaScript emulator may 
 * Video capture (webm creation, thanks to WebRTC, currently only working on Chrome)
 
 #### What's _not_ in it right now:
+_(and I don't really plan to work on that)_
 * File transfers
 * Debugging support
 * Skin switching
+* State saving/loading
+* ...
 
 #### Screenshot:
 If you use the wrapper with the _TI-84 Plus CE_ emulator, you will see something like:  
@@ -45,7 +48,7 @@ If you use the wrapper with the _TI-84 Plus CE_ emulator, you will see something
 
 
 #### Changes over v1:
-* You do _not_ have to extract TI's jar file anymore and and move/copy things around, just drag&drop the one file and that's all!
+* You do _not_ have to extract TI's jar file anymore and move/copy files around, just drag&drop the one .jar file and that's all!
 * Minor improvements to the CSS
 * Bugfixes related to event handling in general
 * Better compatiblity with Firefox and Safari
