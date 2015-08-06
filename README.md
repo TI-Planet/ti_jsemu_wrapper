@@ -19,14 +19,16 @@ List of supported emulators:
 * TI-84 Plus C Silver Edition
 * TI-84 Plus CE / TI-83 Premium CE
 
-In theory, any "TI ExamCalc" (that's the official name) JavaScript emulator may work - but only those from the list above have been tested.
+In theory, any "TI ExamCalc" (that's the official name) JavaScript emulator may work - but only those from the list above have been tested.  
+Note that because the wrapper works by assuming specific files are there, it may suddenly not work anymore on new versions of the SmartView if they have emulator jar files organized differently.
 
 #### How to use it:
 You can actually simply use the [online demo](https://ti-planet.github.io/ti_jsemu_wrapper/demo/), or follow these simple steps if you want it locally:
 * [Download](https://github.com/TI-Planet/ti_jsemu_wrapper/archive/master.zip) this project
 * Open the `index.html` file from the zip you've just downloaded, with a recent decent browser
-* Select or drag&drop the TI SmartView CE emulator file (_the .jar_) you want to use (_located in the SmartView app folder and within the `Java` (or `app`) > `emulators` directory_)
-* That's all :) You don't need to do any extracting/moving/copying!
+* Select or drag&drop the TI SmartView CE emulator file (_the .jar_) you want to use (_located in the SmartView app folder and within `Java` (or `app`) > `emulators`_)
+
+That's all :) No extracting/digging/moving/copying needed!
 
 #### What's in it right now:
 * Keypress history
