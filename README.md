@@ -22,6 +22,7 @@ List of supported emulators:
 In theory, any "TI ExamCalc" (that's the official name) JavaScript emulator may work - but only those from the list above have been tested.
 
 #### How to use it:
+You can actually simply use the [online demo](https://ti-planet.github.io/ti_jsemu_wrapper/demo/), or follow these simple steps if you want it locally:
 * [Download](https://github.com/TI-Planet/ti_jsemu_wrapper/archive/master.zip) this project
 * Open the `index.html` file from the zip you've just downloaded, with a recent decent browser
 * Select or drag&drop the TI SmartView CE emulator file (_the .jar_) you want to use (_located in the SmartView app folder and within the `Java` (or `app`) > `emulators` directory_)
