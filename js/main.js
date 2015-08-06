@@ -94,6 +94,7 @@ function refreshCanvas() {
 function downloadScreenshot(canvas, filename) {
     var lnk = document.createElement('a'), e;
     lnk.download = filename;
+    lnk.target = "_blank"; // at least it doesn't replace the current page in Safari...
     lnk.href = document.getElementById(canvas).toDataURL();
     if (document.createEvent) {
         e = document.createEvent("MouseEvents");
