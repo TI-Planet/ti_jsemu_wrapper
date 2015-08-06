@@ -66,7 +66,7 @@ function bindEvents() {
     document.getElementById("resetEmu").onclick = function() { theCalc && theCalc.resetSVEmulator(); clearHisto(); };
     document.getElementById("clearActiveKey").onclick = function() { theCalc && theCalc.clearHighlightedKey(); };
 
-    document.getElementById("screenshot").onclick = function() { downloadScreenshot('display', 'screenshot_83PCE.png'); };
+    document.getElementById("screenshot").onclick = function() { downloadScreenshot('display', 'screenshot_calc.png'); };
 
     document.getElementById("histo").onclick = clearHisto;
 
