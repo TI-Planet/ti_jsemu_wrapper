@@ -59,17 +59,18 @@ function bindEvents() {
     });
 
     document.addEventListener('keydown', function(e) {
-        if (e.keyCode == 27) {
-            theCalc && theCalc.clearHighlightedKey();
+        if (e.keyCode == 27) { // escape key
+            if ($sel("#svg g[id^='KEY'] path[fill='red']")) {
+                theCalc.clearHighlightedKey();
+            } else {
+                clearHisto();
+            }
         }
     });
 
     zoomDiv.onmouseenter = calculatorDiv.onmouseenter = function() { hasHand && (hand.style.visibility = "visible"); };
     zoomDiv.onmouseleave = calculatorDiv.onmouseleave = function() { hasHand && (hand.style.visibility = "hidden"); };
     zoomDiv.onmousemove = calculatorDiv.onmousemove = function(e) { hasHand && moveHand((e || event).clientX, (e || event).clientY); };
-
-
-    document.getElementById("histo").onclick = clearHisto;
 
     $id("resetEmu").onclick = function() { theCalc.resetSVEmulator(); clearHisto(); };
     $id("clearKey").onclick = function() { theCalc.clearHighlightedKey(); };
