@@ -3,55 +3,58 @@
     LGPL3-licensed
 */
 
-var destCanvasCtx = null;
-var srcCanvas = null;
-var histoList = null;
-var calc = null;
-var hand = null;
-var zoomDiv = null;
+var destCanvasCtx;
+var srcCanvas;
+var histoList;
+var calculatorDiv;
+var hand;
+var zoomDiv;
 var histoListMaxEls = 8;
 var hasHand = false;
 var hasZoomedDisplay = true;
-var isChrome = false;
 var keyHistoryArray = [];
+
+$id = function(id) { return document.getElementById(id); };
+$sel = function(sel) { return document.querySelector(sel); };
+$selAll = function(sel) { return document.querySelectorAll(sel); };
 
 function initWithSVG(svgStr) {
     init_wrapper();
     svgVar = svgStr;
     theCalc = new TI84ForSmartView();
+    if (!theCalc) {
+        return alert("Error initializing the emulator :(")
+    }
     theCalc.initSVG();
-    document.getElementById("svg").style.background = document.querySelectorAll("#Background_Color rect")[0].getAttribute("fill") || "#000";
+    $id("svg").style.background = $sel("#Background_Color rect").getAttribute("fill") || "#000";
     theCalc.boot();
     refreshCanvas();
     bindEvents();
 }
 
 function init_wrapper() {
-    zoomDiv = document.getElementById("zoom");
-    destCanvasCtx = document.getElementById("zoomeddisplay").getContext('2d');
-    srcCanvas = document.getElementById("display");
+    zoomDiv = $id("zoom");
+    destCanvasCtx = $id("zoomeddisplay").getContext('2d');
+    srcCanvas = $id("display");
     destCanvasCtx.scale(1.4, 1.4);
-    histoList = document.getElementById("list");
-    calc = document.getElementById("calculatorDiv");
-    hand = document.getElementById("hand");
-    isChrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
-    document.getElementById('start').disabled = !isChrome;
-    document.getElementById('start').title = isChrome ? 'Will create a webm video' : 'Feature only available on Chrome (needs WebP)!';
+    histoList = $id("list");
+    calculatorDiv = $id("calculatorDiv");
+    hand = $id("hand");
+    var isChrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+    $id('start').disabled = !isChrome;
+    $id('start').title = isChrome ? 'Will create a webm video' : 'Feature only available on Chrome (needs WebP)!';
 }
 
 function bindEvents() {
-    var svgKeys = document.querySelectorAll("#svg g[id^='KEY']");
-    for (var i = 0; i < svgKeys.length; ++i) {
-        svgKeys[i].addEventListener("click", function () {
-            if (theCalc) {
-                var emu_hist = theCalc.getKeyHistory();
-                if (emu_hist.length && keyHistoryArray != emu_hist) {
-                    keyHistoryArray = emu_hist.slice();
-                    addKeyToHistory(keyHistoryArray[keyHistoryArray.length - 1]);
-                }
+    [].forEach.call($selAll("#svg g[id^='KEY']"), function(key) {
+        key.addEventListener("click", function () {
+            var emu_hist = theCalc.getKeyHistory();
+            if (emu_hist.length && keyHistoryArray != emu_hist) {
+                keyHistoryArray = emu_hist.slice();
+                addKeyToHistory(keyHistoryArray[keyHistoryArray.length - 1]);
             }
         }, false);
-    }
+    });
 
     document.addEventListener('keydown', function(e) {
         if (e.keyCode == 27) {
@@ -59,29 +62,26 @@ function bindEvents() {
         }
     });
 
-    zoomDiv.onmouseenter = calc.onmouseenter = function() { hasHand && (hand.style.visibility = "visible"); };
-    zoomDiv.onmouseleave = calc.onmouseleave = function() { hasHand && (hand.style.visibility = "hidden"); };
-    zoomDiv.onmousemove = calc.onmousemove = function(e) { hasHand && moveHand((e || event).clientX, (e || event).clientY); };
+    zoomDiv.onmouseenter = calculatorDiv.onmouseenter = function() { hasHand && (hand.style.visibility = "visible"); };
+    zoomDiv.onmouseleave = calculatorDiv.onmouseleave = function() { hasHand && (hand.style.visibility = "hidden"); };
+    zoomDiv.onmousemove = calculatorDiv.onmousemove = function(e) { hasHand && moveHand((e || event).clientX, (e || event).clientY); };
 
-    document.getElementById("resetEmu").onclick = function() { theCalc && theCalc.resetSVEmulator(); clearHisto(); };
-    document.getElementById("clearActiveKey").onclick = function() { theCalc && theCalc.clearHighlightedKey(); };
-
-    document.getElementById("screenshot").onclick = function() { downloadScreenshot('display', 'screenshot_calc.png'); };
 
     document.getElementById("histo").onclick = clearHisto;
 
-    document.getElementById("toggleHisto").onclick = function() { toggleVisibility('histo'); };
-    document.getElementById("toggleZoom").onclick = function() { toggleVisibility('zoom'); hasZoomedDisplay = !hasZoomedDisplay; };
-    document.getElementById("toggleHand").onclick = function() {
-        hand.style.visibility = hasHand ? "hidden" : "visible";
+    $id("resetEmu").onclick = function() { theCalc.resetSVEmulator(); clearHisto(); };
+    $id("clearKey").onclick = function() { theCalc.clearHighlightedKey(); };
+    $id("screenshot").onclick = function() { downloadScreenshot('display', 'screenshot_calc.png'); };
+    $id("toggleHisto").onclick = function() { clearHisto(); toggleDisplay('histo'); };
+    $id("toggleZoom").onclick = function() { toggleDisplay('zoom'); hasZoomedDisplay = !hasZoomedDisplay; };
+    $id("toggleHand").onclick = function() {
         hasHand = !hasHand;
-        Array.prototype.forEach.call(document.querySelectorAll('#display, #calcTop, #zoom, #svg'), function(el) {
+        [].forEach.call($selAll('#display, #calcTop, #zoom, #svg'), function(el) {
             el.style.cursor = hasHand ? "none" : "default";
         });
     };
 
-    document.getElementById("leftToolbar").style.visibility = "visible";
-    document.getElementById("rightToolbar").style.visibility = "visible";
+    $id("leftToolbar").style.visibility = $id("rightToolbar").style.visibility = "visible";
 }
 
 function refreshCanvas() {
@@ -95,7 +95,7 @@ function downloadScreenshot(canvas, filename) {
     var lnk = document.createElement('a'), e;
     lnk.download = filename;
     lnk.target = "_blank"; // at least it doesn't replace the current page in Safari...
-    lnk.href = document.getElementById(canvas).toDataURL();
+    lnk.href = $id(canvas).toDataURL();
     if (document.createEvent) {
         e = document.createEvent("MouseEvents");
         e.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
@@ -106,8 +106,8 @@ function downloadScreenshot(canvas, filename) {
 }
 
 function moveHand(x, y) {
-    if (calc) {
-        var rect = calc.getBoundingClientRect();
+    if (calculatorDiv) {
+        var rect = calculatorDiv.getBoundingClientRect();
         x = x - rect.left;
         y = y - rect.top;
     }
@@ -120,6 +120,7 @@ function moveHand(x, y) {
 }
 
 function clearHisto() {
+    keyHistoryArray = [];
     histoList.innerHTML = "";
 }
 
@@ -129,16 +130,17 @@ function addKeyToHistory(name) {
     oImg.setAttribute('src', buttonImages[name] );
     oImg.style.width = oImg.style.height = "72px";
     li.appendChild(oImg);
-    if (histoList.childNodes.length)
+    if (histoList.childNodes.length) {
         histoList.insertBefore(li, histoList.firstChild);
-    else
+    } else {
         histoList.appendChild(li);
+    }
     if (histoList.childNodes.length > histoListMaxEls) {
         histoList.removeChild(histoList.lastChild);
     }
 }
 
-function toggleVisibility(id) {
-    var e = document.getElementById(id);
+function toggleDisplay(id) {
+    var e = $id(id);
     e.style.display = e.style.display != 'none' ? 'none' : 'block';
 }

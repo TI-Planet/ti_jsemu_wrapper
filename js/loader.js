@@ -11,21 +11,19 @@ objs = {
 };
 buttonImages = {};
 
-var fileInput = document.getElementById("file-input");
+var fileInput = $id("file-input");
 fileInput.addEventListener('change', function() {
     var file = this.files[0];
     if (file.name.slice(-3) != "jar") {
-        alert("This doesn't look like an emulator JAR!");
-        return false;
+        return alert("This doesn't look like an emulator JAR!");
     }
     this.disabled = true;
     this.style.display = "none";
-    document.getElementById("initLoading").style.display = "block";
+    $id("initLoading").style.display = "block";
     zip.createReader(new zip.BlobReader(file), function(zipReader) {
         zipReader.getEntries(function(entries) {
             entries.forEach(function(entry) {
-                for (var key in objs)
-                {
+                for (var key in objs) {
                     var obj = objs[key];
                     if (!obj[1]) {
                         if (obj[0].test(entry.filename)) {
@@ -49,7 +47,7 @@ fileInput.addEventListener('change', function() {
                                         initWithSVG(objs.skin[2]);
                                         zipReader.close();
                                         fileInput.parentNode.style.display = "none";
-                                        Array.prototype.forEach.call(document.querySelectorAll("#histo, #calculatorDiv, #zoom"), function(el) {
+                                        [].forEach.call($selAll("#histo, #calculatorDiv, #zoom"), function(el) {
                                             el.style.display = "block";
                                         });
                                     }
