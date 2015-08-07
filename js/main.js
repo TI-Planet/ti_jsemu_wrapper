@@ -8,11 +8,15 @@ var srcCanvas;
 var histoList;
 var calculatorDiv;
 var hand;
+var displayDiv;
 var zoomDiv;
+var svgDisplay;
+var calcZoom = 1.0;
 var histoListMaxEls = 8;
 var hasHand = false;
 var hasZoomedDisplay = true;
 var keyHistoryArray = [];
+var isFF = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 
 $id = function(id) { return document.getElementById(id); };
 $sel = function(sel) { return document.querySelector(sel); };
@@ -28,17 +32,21 @@ function initWithSVG(svgStr) {
         return alert("Error initializing the emulator :(")
     }
     theCalc.initSVG();
+    svgDisplay = $id("Display_Rect");
+    resizeHelper();
     $id("svg").style.background = $sel("#Background_Color rect").getAttribute("fill") || "#000";
     theCalc.boot();
     refreshCanvas();
     bindEvents();
+    $id("leftToolbar").style.visibility = $id("rightToolbar").style.visibility = "visible";
 }
 
 function init_wrapper() {
+    displayDiv = $id("displayDiv");
     zoomDiv = $id("zoom");
     destCanvasCtx = $id("zoomeddisplay").getContext('2d');
     srcCanvas = $id("display");
-    destCanvasCtx.scale(1.4, 1.4);
+    destCanvasCtx.scale(1.5, 1.5);
     histoList = $id("list");
     calculatorDiv = $id("calculatorDiv");
     hand = $id("hand");
@@ -84,7 +92,7 @@ function bindEvents() {
         });
     };
 
-    $id("leftToolbar").style.visibility = $id("rightToolbar").style.visibility = "visible";
+    window.onresize = resizeHelper;
 }
 
 function refreshCanvas() {
@@ -95,12 +103,12 @@ function refreshCanvas() {
 }
 
 function downloadScreenshot(canvas, filename) {
-    var lnk = document.createElement('a'), e;
+    var lnk = document.createElement('a');
     lnk.download = filename;
     lnk.target = "_blank"; // at least it doesn't replace the current page in Safari...
     lnk.href = $id(canvas).toDataURL();
     if (document.createEvent) {
-        e = document.createEvent("MouseEvents");
+        var e = document.createEvent("MouseEvents");
         e.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
         lnk.dispatchEvent(e);
     } else if (lnk.fireEvent) {
@@ -109,6 +117,8 @@ function downloadScreenshot(canvas, filename) {
 }
 
 function moveHand(x, y) {
+    x /= calcZoom;
+    y /= calcZoom;
     if (calculatorDiv) {
         var rect = calculatorDiv.getBoundingClientRect();
         x = x - rect.left;
@@ -146,4 +156,15 @@ function addKeyToHistory(name) {
 function toggleDisplay(id) {
     var e = $id(id);
     e.style.display = e.style.display != 'none' ? 'none' : 'block';
+}
+
+function resizeHelper() {
+    theCalc.Zoom();
+    var val = isFF ? parseFloat(calculatorDiv.style.transform.replace("scale(","").replace(")","")) : calculatorDiv.style.zoom;
+    val *= 0.8;
+    if (val < 1)
+        val = 1;
+    calculatorDiv.style.zoom = val;
+    calculatorDiv.style.MozTransform = "scale(" + val + ")";
+    calcZoom = val;
 }
