@@ -21,7 +21,9 @@ $selAll = function(sel) { return document.querySelectorAll(sel); };
 function initWithSVG(svgStr) {
     init_wrapper();
     svgVar = svgStr;
+    clog_bak = console.log;
     theCalc = new TI84ForSmartView();
+    console.log = clog_bak;
     if (!theCalc) {
         return alert("Error initializing the emulator :(")
     }
