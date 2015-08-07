@@ -10,13 +10,11 @@ var calculatorDiv;
 var hand;
 var displayDiv;
 var zoomDiv;
-var svgDisplay;
 var calcZoom = 1.0;
 var histoListMaxEls = 8;
 var hasHand = false;
 var hasZoomedDisplay = true;
 var keyHistoryArray = [];
-var isFF = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 
 $id = function(id) { return document.getElementById(id); };
 $sel = function(sel) { return document.querySelector(sel); };
@@ -32,7 +30,6 @@ function initWithSVG(svgStr) {
         return alert("Error initializing the emulator :(")
     }
     theCalc.initSVG();
-    svgDisplay = $id("Display_Rect");
     resizeHelper();
     $id("svg").style.background = $sel("#Background_Color rect").getAttribute("fill") || "#000";
     theCalc.boot();
@@ -160,7 +157,7 @@ function toggleDisplay(id) {
 
 function resizeHelper() {
     theCalc.Zoom();
-    var val = isFF ? parseFloat(calculatorDiv.style.transform.replace("scale(","").replace(")","")) : calculatorDiv.style.zoom;
+    var val = calculatorDiv.style.zoom;
     val *= 0.8;
     if (val < 1)
         val = 1;
