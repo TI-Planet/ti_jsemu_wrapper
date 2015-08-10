@@ -15,7 +15,9 @@ For this project to work, you have to use the appropriate emulator file from TI 
 ## Features and limitations
 What it DOES have/do | What it DOES NOT have/do
 ------------ | -------------
-✓ Keypress history <br> ✓ Big hand pointer <br> ✓ Screen zooming <br> ✓ Screenshot (PNG) <br> ✓ Video capture (WebM) | ✗ File transfers <br> ✗ Debugging support <br> ✗ Skin switching <br> ✗ State saving/loading <br> ✗ ...
+✓ Keypress history <br> ✓ Big hand pointer <br> ✓ Screen zooming <br> ✓ Screenshot (PNG) <br> ✓ Video capture (WebM) | ✗ File transfers <br> ✗ Debugging support <br> ✗ Skin switching <br> ✗ State saving/loading <br> ✗ "View<sup>3</sup>" support
+
+Note: currently, the wrapper is especially optimized for the CE calculator models - the other ones should work, but may have unexpected screen dimensions.
 
 ## Why?
 The point of this is to be able to enjoy a good emulation speed from TI's emu by running it within a web browser rather than within the SmartView, since Java has a suboptimal JS interpreter in its webview.  
@@ -38,8 +40,8 @@ Or just make the calculator OS force-refresh the whole screen.
 #### It won't load in Internet Explorer...?
 Hey, I did say "recent decent browser" :P. Anyway, it seems to actually work if you just change its user agent from the console, to Chrome for example.
 
-#### I want to resize the zoomed screen, how do I do that?
-Well, right now you'll have to live-edit the HTML/CSS (right-click > inspect), but I have something better on my TODO list. The current default zoom is at 1.5x, by the way.
+#### How would I go from one emualtor to another?
+Well, you'd just have to reload the page and select the other one.
 
 ## Screenshot:
 If you use the wrapper with the _TI-84 Plus CE_ emulator, you will see something like:  
