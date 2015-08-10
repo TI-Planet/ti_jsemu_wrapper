@@ -168,7 +168,7 @@ function addKeyToHistory(name) {
 
 function toggleDisplay(id) {
     var e = $id(id);
-    e.style.display = e.style.display != 'none' ? 'none' : 'block';
+    e.style.display = e.style.display != 'none' ? 'none' : 'inline-block';
 }
 
 function resizeHelper() {

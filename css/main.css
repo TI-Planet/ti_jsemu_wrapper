@@ -95,7 +95,6 @@ input[type="file"]:after {
 
 
 #zoom {
-    border: 2px solid black;
     float: left;
     position: relative;
 }
@@ -103,10 +102,12 @@ input[type="file"]:after {
     #zoom { left: 25px; }
 }
 @media (max-width: 990px) {
-    #toggleZoomLabel { display: none !important; }
-    #zoom { display: none !important; }
-    #toggleHistoLabel { display: none !important; }
-    #histo { display: none !important; }
+    #zoom, #toggleZoomLabel, #zoomValueLabel, #toggleHistoLabel, #histo {
+        display: none !important;
+    }
+}
+#zoomeddisplay {
+    border: 1px solid black;
 }
 
 #leftToolbar, #rightToolbar {
@@ -139,8 +140,9 @@ input[type="file"]:after {
 }
 
 #list {
-    list-style-type: none;
+    margin-top: 5px;
     padding: 0;
+    list-style-type: none;
     text-align: center;
     display: inline-block;
 }
