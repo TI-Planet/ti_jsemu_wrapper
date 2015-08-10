@@ -127,6 +127,12 @@ input[type="file"]:after {
     border-top-left-radius: 6px;
 }
 
+#zoomValue {
+    margin: -4px 0 0;
+    position: relative;
+    top: 5px;
+}
+
 #histo {
     width: 72px;
     float: left;

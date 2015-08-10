@@ -3,6 +3,7 @@
     LGPL3-licensed
 */
 
+var destCanvas;
 var destCanvasCtx;
 var srcCanvas;
 var histoList;
@@ -10,7 +11,8 @@ var calculatorDiv;
 var hand;
 var displayDiv;
 var zoomDiv;
-var calcZoom = 1.0;
+var calcDivZoom = 1.0;
+var zoomedScreenRatio = 1.5;
 var histoListMaxEls = 8;
 var hasHand = false;
 var hasZoomedDisplay = true;
@@ -41,9 +43,10 @@ function initWithSVG(svgStr) {
 function init_wrapper() {
     displayDiv = $id("displayDiv");
     zoomDiv = $id("zoom");
-    destCanvasCtx = $id("zoomeddisplay").getContext('2d');
     srcCanvas = $id("display");
-    destCanvasCtx.scale(1.5, 1.5);
+    destCanvas = $id("zoomeddisplay");
+    destCanvasCtx = destCanvas.getContext('2d');
+    destCanvasCtx.scale(zoomedScreenRatio, zoomedScreenRatio);
     histoList = $id("list");
     calculatorDiv = $id("calculatorDiv");
     hand = $id("hand");
@@ -81,7 +84,20 @@ function bindEvents() {
     $id("clearKey").onclick = function() { theCalc.clearHighlightedKey(); };
     $id("screenshot").onclick = function() { downloadScreenshot('display', 'screenshot_calc.png'); };
     $id("toggleHisto").onclick = function() { clearHisto(); toggleDisplay('histo'); };
-    $id("toggleZoom").onclick = function() { toggleDisplay('zoom'); hasZoomedDisplay = !hasZoomedDisplay; };
+    $id("toggleZoom").onclick = function() {
+        toggleDisplay('zoom');
+        toggleDisplay('zoomValueLabel');
+        hasZoomedDisplay = !hasZoomedDisplay;
+    };
+    $id("zoomValue").oninput = $id("zoomValue").onchange = function() {
+        zoomedScreenRatio = parseFloat(this.value);
+        destCanvas.width = srcCanvas.width*zoomedScreenRatio;
+        destCanvas.height = srcCanvas.height*zoomedScreenRatio;
+        $sel("#zoomValueLabel span").innerHTML = zoomedScreenRatio.toFixed(1) + 'x';
+        destCanvasCtx.setTransform(1, 0, 0, 1, 0, 0);
+        destCanvasCtx.clearRect(0,0,destCanvasCtx.canvas.width,destCanvasCtx.canvas.height);
+        destCanvasCtx.scale(zoomedScreenRatio, zoomedScreenRatio);
+    };
     $id("toggleHand").onclick = function() {
         hasHand = !hasHand;
         [].forEach.call($selAll('#display, #calcTop, #zoom, #svg'), function(el) {
@@ -114,8 +130,8 @@ function downloadScreenshot(canvas, filename) {
 }
 
 function moveHand(x, y) {
-    x /= calcZoom;
-    y /= calcZoom;
+    x /= calcDivZoom;
+    y /= calcDivZoom;
     if (calculatorDiv) {
         var rect = calculatorDiv.getBoundingClientRect();
         x = x - rect.left;
@@ -163,5 +179,5 @@ function resizeHelper() {
         val = 1;
     calculatorDiv.style.zoom = val;
     calculatorDiv.style.MozTransform = "scale(" + val + ")";
-    calcZoom = val;
+    calcDivZoom = val;
 }
